@@ -8,7 +8,6 @@ use BadMethodCallException;
 use Illuminate\Support\Str;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Livewire\Exceptions\CannotUseReservedLivewireComponentProperties;
 
 abstract class Component
@@ -145,11 +144,6 @@ abstract class Component
         foreach ($this->getPublicPropertiesDefinedBySubClass() as $key => $value) {
             if (is_array($value)) {
                 $this->$key = $this->reindexArrayWithNumericKeysOtherwiseJavaScriptWillMessWithTheOrder($value);
-            }
-
-            if ($value instanceof EloquentCollection) {
-                // Preserve collection items order by reindexing underlying array.
-                $this->$key = $value->values();
             }
         }
     }
